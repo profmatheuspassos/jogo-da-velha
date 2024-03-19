@@ -27,14 +27,31 @@ def escolhaJogador():
     escolha = input("Indique sua opção: ").capitalize()
     return escolha
 
+def erroEscolha():
+    print("Insira apenas números de 1 a 9. Voltando ao menu principal...")
+    time.sleep(3)
+    os.system("cls" if os.name == "nt" else "clear")
+
+
+def posicaoLivre(posicao):
+    return tabuleiro[posicao] == None
+
+def fazerJogada(posicao, jogador):
+    if posicaoLivre(posicao):
+        tabuleiro[posicao] = jogador
+        return True
+    return False
+
 os.system("cls" if os.name == "nt" else "clear")
 
 jogadas = ["X", "O"]
-linha1 = [None, None, None]
-linha2 = [None, None, None]
-linha3 = [None, None, None]
+tabuleiro = [None] * 9
 
 escolha = escolhaJogador()
+if escolha == "X":
+    escolhaComp = "O"
+else:
+    escolhaComp = "X"
 
 while True:
     if escolha not in ["X", "O"]:
@@ -50,59 +67,55 @@ while True:
         try:
             posicao = int(input("Indique em qual posição você quer fazer a sua jogada: "))
         except:
-            print("Insira apenas números de 1 a 9. Voltando ao menu principal...")
-            time.sleep(3)
-            os.system("cls" if os.name == "nt" else "clear")
+            erroEscolha()
             continue
         if posicao not in range(1, 10):
-            print("Insira apenas números de 1 a 9. Voltando ao menu principal...")
-            time.sleep(3)
-            os.system("cls" if os.name == "nt" else "clear")
+            erroEscolha()
             continue
         else:
-            linha = (posicao - 1) // 3
+            # linha = (posicao - 1) // 3
             indice = (posicao - 1) % 3
-            if linha == 0:
-                linha1[indice] = escolha
-            elif linha == 1:
-                linha2[indice] = escolha
-            elif linha == 2:
-                linha3[indice] = escolha
+            if posicaoLivre(posicao):
+                fazerJogada(posicao, escolha)
             while True:
-                posicaoComp = random.choice(range(1, 10))
-                escolhaComp = random.choice(["X", "O"])
-                if posicaoComp == posicao:
-                    continue
-                else:
-                    linhaComp = (posicaoComp - 1) // 3
-                    indiceComp = (posicaoComp - 1) % 3
-                    if linhaComp == 0:
-                        if None in linha1:
-                            if linha1[indiceComp] == None:
-                                linha1[indiceComp] = escolhaComp
-                            else:
-                                continue
-                        else:
-                            pass
-                    elif linhaComp == 1:
-                        if None in linha2:
-                            if linha2[indiceComp] == None:
-                                linha2[indiceComp] = escolhaComp
-                            else:
-                                continue
-                        else:
-                            pass
-                    elif linhaComp == 2:
-                        if None in linha3:
-                            if linha3[indiceComp] == None:
-                                linha3[indiceComp] = escolhaComp
-                            else:
-                                continue
-                        else:
-                            pass
-                print(linha1)
-                print(linha2)
-                print(linha3)
+                posicaoComp = random.randint(0, 8)
+#                escolhaComp = random.choice(["X", "O"])
+                if posicaoLivre(posicaoComp):
+                    fazerJogada(posicaoComp, escolhaComp)
+                    break
+
+#                    if posicaoComp == posicao:
+#                        continue
+#                    else:
+#                        linhaComp = (posicaoComp - 1) // 3
+#                        indiceComp = (posicaoComp - 1) % 3
+#                        if linhaComp == 0:
+#                            if None in linha1:
+#                                if linha1[indiceComp] == None:
+#                                    linha1[indiceComp] = escolhaComp
+#                                else:
+#                                    continue
+#                            else:
+#                                pass
+#                        elif linhaComp == 1:
+#                            if None in linha2:
+#                                if linha2[indiceComp] == None:
+#                                    linha2[indiceComp] = escolhaComp
+#                                else:
+#                                    continue
+#                            else:
+#                                pass
+#                        elif linhaComp == 2:
+#                            if None in linha3:
+#                                if linha3[indiceComp] == None:
+#                                    linha3[indiceComp] = escolhaComp
+#                                else:
+#                                    continue
+#                            else:
+#                                pass
+#                    print(linha1)
+#                    print(linha2)
+#                    print(linha3)
+#                    break
                 break
-            break
-    
+        
