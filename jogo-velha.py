@@ -23,99 +23,53 @@ def instrucoes():
     print("Pressione <ENTER> para continuar.")
 
 def escolhaJogador():
+    os.system("cls" if os.name == "nt" else "clear")
+    print("VAMOS JOGAR!")
     print("Você quer jogar com (X) ou com (O)?")
     escolha = input("Indique sua opção: ").capitalize()
     return escolha
 
-def erroEscolha():
-    print("Insira apenas números de 1 a 9. Voltando ao menu principal...")
-    time.sleep(3)
-    os.system("cls" if os.name == "nt" else "clear")
-
-
-def posicaoLivre(posicao):
-    return tabuleiro[posicao] == None
-
-def fazerJogada(posicao, jogador):
-    if posicaoLivre(posicao):
-        tabuleiro[posicao] = jogador
-        return True
-    return False
+def indiceTabuleiro():
+    while True:
+        try:
+            indice = int(input("Indique a posição em que você quer fazer a sua jogada: "))
+            if indice not in range(1, 10):
+                print("Insira apenas números de 1 a 9. Tente novamente.")
+                time.sleep(3)
+                os.system("cls" if os.name == "nt" else "clear")
+            else:
+                break
+        except ValueError:
+            print("Insira apenas números de 1 a 9. Tente novamente.")
+            time.sleep(3)
+            os.system("cls" if os.name == "nt" else "clear")
+    return indice - 1
 
 os.system("cls" if os.name == "nt" else "clear")
 
-jogadas = ["X", "O"]
+# cabecalho()
+
+# instrucoes()
+
 tabuleiro = [None] * 9
 
-escolha = escolhaJogador()
-if escolha == "X":
-    escolhaComp = "O"
-else:
-    escolhaComp = "X"
-
 while True:
-    if escolha not in ["X", "O"]:
-        print("Insira apenas X ou O. Voltando ao menu principal...")
+    opcaoJogador = escolhaJogador()
+    if opcaoJogador == "X":
+        opcaoComp = "O"
+    elif opcaoJogador == "O":
+        opcaoComp = "X"
+    else:
+        print("Opção inválida. Insira apenas \"X\" ou \"O\". Tente novamente.")
         time.sleep(3)
         os.system("cls" if os.name == "nt" else "clear")
         continue
-    else:
-        print(f"Você escolheu a opção {escolha}.")
-        print("Vamos começar! Mas antes, leia com atenção as instruções abaixo.\n")
-        instrucoes()
-        input()
-        try:
-            posicao = int(input("Indique em qual posição você quer fazer a sua jogada: "))
-        except:
-            erroEscolha()
-            continue
-        if posicao not in range(1, 10):
-            erroEscolha()
-            continue
-        else:
-            # linha = (posicao - 1) // 3
-            indice = (posicao - 1) % 3
-            if posicaoLivre(posicao):
-                fazerJogada(posicao, escolha)
-            while True:
-                posicaoComp = random.randint(0, 8)
-#                escolhaComp = random.choice(["X", "O"])
-                if posicaoLivre(posicaoComp):
-                    fazerJogada(posicaoComp, escolhaComp)
-                    break
+    break
 
-#                    if posicaoComp == posicao:
-#                        continue
-#                    else:
-#                        linhaComp = (posicaoComp - 1) // 3
-#                        indiceComp = (posicaoComp - 1) % 3
-#                        if linhaComp == 0:
-#                            if None in linha1:
-#                                if linha1[indiceComp] == None:
-#                                    linha1[indiceComp] = escolhaComp
-#                                else:
-#                                    continue
-#                            else:
-#                                pass
-#                        elif linhaComp == 1:
-#                            if None in linha2:
-#                                if linha2[indiceComp] == None:
-#                                    linha2[indiceComp] = escolhaComp
-#                                else:
-#                                    continue
-#                            else:
-#                                pass
-#                        elif linhaComp == 2:
-#                            if None in linha3:
-#                                if linha3[indiceComp] == None:
-#                                    linha3[indiceComp] = escolhaComp
-#                                else:
-#                                    continue
-#                            else:
-#                                pass
-#                    print(linha1)
-#                    print(linha2)
-#                    print(linha3)
-#                    break
-                break
-        
+indiceJogador = indiceTabuleiro()
+indiceComp = random.randint(0, 8)
+
+print(f"Opção jogador: {opcaoJogador}")
+print(f"Opção compputador: {opcaoComp}")
+print(f"Posição escolhida jogador: {indiceJogador}")
+print(f"Posição escolhida computador: {indiceComp}")
